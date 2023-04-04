@@ -112,9 +112,13 @@ struct UserDetailView: View {
                     HStack(alignment: .center) {
                         HStack(alignment: .center) {
                             Spacer()
-                            VStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: 12) {
                                 Text(user.about)
                                     .multilineTextAlignment(.leading)
+                                    .padding()
+                                    .background(.regularMaterial)
+                                    .foregroundColor(.primary)
+                                    .clipShape(RoundedRectangle(cornerRadius: 25))
                                 
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack {

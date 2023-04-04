@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+
+// https://www.hackingwithswift.com/samples/friendface.json
+
 struct ContentView: View {
     var body: some View {
         VStack {

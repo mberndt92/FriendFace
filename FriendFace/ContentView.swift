@@ -7,18 +7,37 @@
 
 import SwiftUI
 
-
-// https://www.hackingwithswift.com/samples/friendface.json
-
 struct ContentView: View {
+    
+    private var apiController = ApiController()
+    @State private var users: [User] = []
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            List {
+                ForEach(users, id: \.id) { user in
+                    HStack {
+                        Text(user.name)
+                        Spacer()
+                        Image(
+                            systemName: "circle.fill"
+                        )
+                        .foregroundColor(user.isActive ? .green : .red)
+                    }
+                }
+            }
+            .onAppear {
+                Task {
+                    await fetchUsers()
+                }
+            }
         }
-        .padding()
+    }
+    
+    func fetchUsers() async {
+        if users.isEmpty {
+            users = await apiController.fetchUsers()
+        }
     }
 }
 

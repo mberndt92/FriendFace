@@ -16,13 +16,17 @@ struct ContentView: View {
         NavigationView {
             List {
                 ForEach(users, id: \.id) { user in
-                    HStack {
-                        Text(user.name)
-                        Spacer()
-                        Image(
-                            systemName: "circle.fill"
-                        )
-                        .foregroundColor(user.isActive ? .green : .red)
+                    NavigationLink {
+                       UserDetailView(user: user)
+                    } label: {
+                        HStack {
+                            Text(user.name)
+                            Spacer()
+                            Image(
+                                systemName: "circle.fill"
+                            )
+                            .foregroundColor(user.isActive ? .green : .red)
+                        }
                     }
                 }
             }

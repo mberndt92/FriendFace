@@ -20,7 +20,7 @@ struct UserDetailView: View {
         case darkOrchidOnOldLace = "#9932CC"
         case dodgerBlueOnFloralWhite = "#1E90FF"
         case indigoOnPeachPuff = "#4B0082"
-
+        
         var foregroundColor: String {
             return self.rawValue
         }
@@ -50,7 +50,7 @@ struct UserDetailView: View {
             }
         }
     }
-
+    
     
     @Environment(\.dismiss) var dismiss
     
@@ -60,109 +60,114 @@ struct UserDetailView: View {
     @State var friendTags: [String: ColorCombination] = [:]
     
     var body: some View {
-        VStack(alignment: .leading) {
-
-            Section {
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Text(user.name)
-                            .font(.title.bold())
-                        
-                        Spacer()
-                        
-                        Image(systemName: "\(user.age).circle")
-                            .font(.largeTitle)
-//                        Text(String(user.age))
-//                            .font(.title)
-//                            .padding(10)
-//                            .background(Color.gray)
-//                            .foregroundColor(.white)
-//                            .clipShape(Circle())
+        ScrollView {
+            VStack(alignment: .leading) {
+                
+                Section {
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text(user.name)
+                                .font(.title.bold())
                             
-                    }
-                    
-                    HStack {
-                        Text(user.email)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    HStack {
-                        Image(systemName: "calendar")
-                        Text("Joined on \(user.registered.formatted(date: .abbreviated, time: .omitted))")
-                            .font(.subheadline)
-                    }
-                }
-            }
-            
-            Divider()
-            
-            // Bugged - the first HStack is not impacted by alignment etc.
-            Section {
-                VStack(alignment: .leading, spacing: 4) {
-                    
-                    HStack {
-                        Image(systemName: "bag")
-                        Text("\(user.company)")
-                    }
-                    
-                    HStack {
-                        Image(systemName: "house")
-                        Text("\(user.address)")
+                            Spacer()
+                            
+                            Image(systemName: "\(user.age).circle")
+                                .font(.largeTitle)
+                            
+                        }
+                        
+                        HStack {
+                            Text(user.email)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        HStack {
+                            Image(systemName: "calendar")
+                            Text("Joined on \(user.registered.formatted(date: .abbreviated, time: .omitted))")
+                                .font(.subheadline)
+                        }
                     }
                 }
-            }
-            
-            Section {
-                HStack(alignment: .center) {
+                
+                Divider()
+                
+                // Bugged - the first HStack is not impacted by alignment etc.
+                Section {
+                    VStack(alignment: .leading, spacing: 4) {
+                        
+                        HStack {
+                            Image(systemName: "bag")
+                            Text("\(user.company)")
+                        }
+                        
+                        HStack {
+                            Image(systemName: "house")
+                            Text("\(user.address)")
+                        }
+                    }
+                }
+                
+                Section {
                     HStack(alignment: .center) {
-                        Spacer()
-                        VStack(spacing: 12) {
-                            Text(user.about)
-                                .multilineTextAlignment(.leading)
-                            
-                            HStack(spacing: 8) {
-                                ForEach(user.tags, id: \.self) { tag in
-                                    Text(tag)
-                                        .padding(10)
-                                        .padding(.horizontal, 15)
-                                        .background(Color(hex: tags[tag]?.backgroundColor ?? "#000000"))
-                                        .foregroundColor(Color(hex: tags[tag]?.rawValue ?? "#FFFFFF"))
-                                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        HStack(alignment: .center) {
+                            Spacer()
+                            VStack(spacing: 12) {
+                                Text(user.about)
+                                    .multilineTextAlignment(.leading)
+                                
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack {
+                                        ForEach(user.tags, id: \.self) { tag in
+                                            Text(tag)
+                                                .font(.caption)
+                                                .padding(10)
+                                                .padding(.horizontal, 15)
+                                                .background(Color(hex: tags[tag]?.backgroundColor ?? "#000000"))
+                                                .foregroundColor(Color(hex: tags[tag]?.rawValue ?? "#FFFFFF"))
+                                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                                        }
+                                    }
                                 }
                             }
+                            Spacer()
                         }
-                        Spacer()
                     }
                 }
-                .frame(width: .infinity, alignment: .center)
-            }
-
-            HStack {
-                Image(systemName: "person")
-                    .font(.title)
-                Text("Friends")
-                    .font(.title)
-            }
-            VStack {
-                ForEach(user.friends, id: \.id) { friend in
-                    Text(friend.name)
-                        .padding(15)
-                        .foregroundColor(Color(hex: friendTags[friend.name]?.rawValue ?? "#FFFFFF"))
-                        .background(Color(hex: friendTags[friend.name]?.backgroundColor ?? "#000000"))
-                        .clipShape(RoundedRectangle(cornerRadius: 30))
+                
+                Divider()
+                Section {
+                    HStack {
+                        Image(systemName: "person")
+                            .font(.title)
+                        Text("Friends")
+                            .font(.title)
+                    }
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(user.friends, id: \.id) { friend in
+                                Text(friend.name)
+                                    .font(.subheadline)
+                                    .padding(10)
+                                    .foregroundColor(Color(hex: friendTags[friend.name]?.rawValue ?? "#FFFFFF"))
+                                    .background(Color(hex: friendTags[friend.name]?.backgroundColor ?? "#000000"))
+                                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                            }
+                        }
+                    }
                 }
+                
+                Spacer()
+                
+                Spacer()
             }
-            
-            Spacer()
-            
-            Spacer()
-        }
-        .padding()
-        .navigationTitle(user.name)
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            generateColorCombinations()
+            .padding()
+            .navigationTitle(user.name)
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                generateColorCombinations()
+            }
         }
     }
     

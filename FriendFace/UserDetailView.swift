@@ -9,49 +9,6 @@ import SwiftUI
 
 struct UserDetailView: View {
     
-    enum ColorCombination: String, CaseIterable {
-        case whiteOnDarkSlateGray = "#FFFFFF"
-        case blackOnLightGray = "#000000"
-        case darkRedOnLemonChiffon = "#8B0000"
-        case navyOnMintCream = "#000080"
-        case forestGreenOnIvory = "#228B22"
-        case darkOrangeOnLavender = "#FF8C00"
-        case crimsonOnHoneydew = "#DC143C"
-        case darkOrchidOnOldLace = "#9932CC"
-        case dodgerBlueOnFloralWhite = "#1E90FF"
-        case indigoOnPeachPuff = "#4B0082"
-        
-        var foregroundColor: String {
-            return self.rawValue
-        }
-        
-        var backgroundColor: String {
-            switch self {
-            case .whiteOnDarkSlateGray:
-                return "#2F4F4F"
-            case .blackOnLightGray:
-                return "#D3D3D3"
-            case .darkRedOnLemonChiffon:
-                return "#FFFACD"
-            case .navyOnMintCream:
-                return "#F5FFFA"
-            case .forestGreenOnIvory:
-                return "#FFFFF0"
-            case .darkOrangeOnLavender:
-                return "#E6E6FA"
-            case .crimsonOnHoneydew:
-                return "#F0FFF0"
-            case .darkOrchidOnOldLace:
-                return "#FDF5E6"
-            case .dodgerBlueOnFloralWhite:
-                return "#FFFAF0"
-            case .indigoOnPeachPuff:
-                return "#FFDAB9"
-            }
-        }
-    }
-    
-    
     @Environment(\.dismiss) var dismiss
     
     let user: User
@@ -148,18 +105,7 @@ struct UserDetailView: View {
                             .font(.title)
                     }
                     
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(user.friends, id: \.id) { friend in
-                                Text(friend.name)
-                                    .font(.subheadline)
-                                    .padding(10)
-                                    .foregroundColor(Color(hex: friendTags[friend.name]?.rawValue ?? "#FFFFFF"))
-                                    .background(Color(hex: friendTags[friend.name]?.backgroundColor ?? "#000000"))
-                                    .clipShape(RoundedRectangle(cornerRadius: 30))
-                            }
-                        }
-                    }
+                    FriendsScrollView(friends: user.friends, friendTags: friendTags)
                 }
                 
                 Spacer()
